@@ -7,6 +7,7 @@ import {
   NetFlowChart,
   WhaleOrderBook,
   WhaleAnalytics,
+  OrderbookImbalance,
 } from "@/components/dashboard";
 import { fetchWhaleStats, WhaleStats } from "@/lib/api";
 import { formatUSD } from "@/lib/utils";
@@ -73,6 +74,12 @@ export function Dashboard() {
             </div>
           </div>
           <div className="flex items-center gap-4">
+            <a
+              href="/docs"
+              className="text-sm text-zinc-400 hover:text-white transition-colors hidden sm:flex items-center gap-1"
+            >
+              Docs
+            </a>
             <a
               href="https://pacifica.fi"
               target="_blank"
@@ -169,28 +176,8 @@ export function Dashboard() {
               <WhaleActivityFeed symbolFilter={selectedSymbol === "ALL" ? undefined : selectedSymbol} />
             </div>
             <div className="space-y-6">
+              <OrderbookImbalance symbolFilter={selectedSymbol === "ALL" ? undefined : selectedSymbol} />
               <NetFlowChart symbolFilter={selectedSymbol === "ALL" ? undefined : selectedSymbol} />
-              <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-                <h3 className="text-sm font-semibold mb-3">Tracked Markets</h3>
-                <div className="flex flex-wrap gap-2">
-                  {["BTC", "ETH", "SOL"].map((symbol) => (
-                    <span
-                      key={symbol}
-                      className="px-3 py-1.5 bg-zinc-800 rounded-full text-sm font-mono"
-                    >
-                      {symbol}
-                    </span>
-                  ))}
-                </div>
-                <div className="mt-4 pt-4 border-t border-zinc-800">
-                  <p className="text-xs text-zinc-500">
-                    Threshold:{" "}
-                    <span className="text-white">
-                      {selectedSymbol === "SOL" ? "$1,000" : selectedSymbol === "ALL" ? "$1k-10k" : "$10,000"}
-                    </span>
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         )}

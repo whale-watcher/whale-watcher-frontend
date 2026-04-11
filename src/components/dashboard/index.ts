@@ -3,3 +3,4 @@ export { WhaleActivityFeed } from "./WhaleActivityFeed";
 export { NetFlowChart } from "./NetFlowChart";
 export { WhaleOrderBook } from "./WhaleOrderBook";
 export { WhaleAnalytics } from "./WhaleAnalytics";
+export { OrderbookImbalance } from "./OrderbookImbalance";

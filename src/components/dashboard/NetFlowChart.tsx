@@ -12,6 +12,38 @@ import {
 } from "recharts";
 import { fetchWhaleStats, WhaleStats } from "@/lib/api";
 import { formatUSD } from "@/lib/utils";
+import { TrendingUp, TrendingDown } from "lucide-react";
+
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: Array<{ value: number; payload: { name: string; fill: string } }>;
+  label?: string;
+}
+
+// Custom tooltip component
+function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
+  if (!active || !payload || !payload.length) return null;
+  
+  const data = payload[0];
+  const value = data.value;
+  const isBuy = label === "Buy Volume";
+  
+  return (
+    <div className="bg-zinc-900 border border-zinc-700 rounded-xl p-4 shadow-2xl min-w-[160px]">
+      <div className="flex items-center gap-2 mb-2">
+        {isBuy ? (
+          <TrendingUp size={16} className="text-green-500" />
+        ) : (
+          <TrendingDown size={16} className="text-red-500" />
+        )}
+        <span className="font-semibold text-white">{label}</span>
+      </div>
+      <div className={`text-2xl font-bold ${isBuy ? "text-green-500" : "text-red-500"}`}>
+        {formatUSD(value)}
+      </div>
+    </div>
+  );
+}
 
 interface NetFlowChartProps {
   symbolFilter?: string;
@@ -97,17 +129,16 @@ export function NetFlowChart({ symbolFilter }: NetFlowChartProps) {
               width={90}
             />
             <Tooltip
-              formatter={(value) => formatUSD(Number(value))}
-              contentStyle={{
-                backgroundColor: "#18181b",
-                border: "1px solid #27272a",
-                borderRadius: "8px",
-              }}
-              labelStyle={{ color: "#fff" }}
+              content={<CustomTooltip />}
+              cursor={{ fill: "rgba(255,255,255,0.05)" }}
             />
-            <Bar dataKey="value" radius={[0, 4, 4, 0]}>
+            <Bar dataKey="value" radius={[0, 8, 8, 0]} barSize={32}>
               {chartData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.fill} />
+                <Cell 
+                  key={`cell-${index}`} 
+                  fill={entry.fill}
+                  className="transition-opacity hover:opacity-80"
+                />
               ))}
             </Bar>
           </BarChart>

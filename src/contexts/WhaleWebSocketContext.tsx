@@ -17,14 +17,47 @@ export interface WhaleAlertData {
   wallet_address?: string;
 }
 
+export interface ImbalanceData {
+  symbol: string;
+  bid_volume: number;
+  ask_volume: number;
+  imbalance_ratio: number;
+  imbalance_pct: number;
+  bid_levels: number;
+  ask_levels: number;
+  best_bid: number;
+  best_ask: number;
+  spread: number;
+  spread_pct: number;
+  timestamp: number;
+}
+
+export interface AggregatedImbalance {
+  total_bid_volume: number;
+  total_ask_volume: number;
+  overall_imbalance_ratio: number;
+  overall_imbalance_pct: number;
+  symbols: Record<string, ImbalanceData>;
+}
+
 interface WhaleWebSocketContextType {
   alerts: WhaleAlertData[];
+  imbalances: AggregatedImbalance;
   isConnected: boolean;
   lastUpdate: number;
 }
 
+const defaultImbalances: AggregatedImbalance = {
+  total_bid_volume: 0,
+  total_ask_volume: 0,
+  overall_imbalance_ratio: 0.5,
+  overall_imbalance_pct: 0,
+  symbols: {}
+};
+
 const WhaleWebSocketContext = createContext<WhaleWebSocketContextType>({
   alerts: [],
+  imbalances: defaultImbalances,
   isConnected: false,
   lastUpdate: Date.now(),
 });
@@ -35,6 +68,7 @@ function getAlertKey(alert: WhaleAlertData): string {
 
 export function WhaleWebSocketProvider({ children }: { children: ReactNode }) {
   const [alerts, setAlerts] = useState<WhaleAlertData[]>([]);
+  const [imbalances, setImbalances] = useState<AggregatedImbalance>(defaultImbalances);
   const [isConnected, setIsConnected] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<number>(Date.now());
 
@@ -133,9 +167,33 @@ export function WhaleWebSocketProvider({ children }: { children: ReactNode }) {
             if (message.type === "initial_data") {
               console.log("📦 [Context] Initial data:", message.data?.length || 0, "alerts");
               setInitialAlerts(message.data || []);
+              if (message.imbalances) {
+                setImbalances(message.imbalances);
+              }
             } else if (message.type === "whale_alert" && message.data) {
               console.log("🐋 [Context] New whale:", message.data.symbol, "$" + Math.round(message.data.usd_value).toLocaleString());
               addAlert(message.data);
+            } else if (message.type === "imbalance_update" && message.data) {
+              // Update single symbol imbalance
+              const imbalanceData = message.data as ImbalanceData;
+              setImbalances(prev => {
+                const newSymbols: Record<string, ImbalanceData> = { 
+                  ...prev.symbols, 
+                  [imbalanceData.symbol]: imbalanceData 
+                };
+                const values = Object.values(newSymbols);
+                const totalBid = values.reduce((sum, d) => sum + d.bid_volume, 0);
+                const totalAsk = values.reduce((sum, d) => sum + d.ask_volume, 0);
+                const total = totalBid + totalAsk;
+                return {
+                  total_bid_volume: totalBid,
+                  total_ask_volume: totalAsk,
+                  overall_imbalance_ratio: total > 0 ? totalBid / total : 0.5,
+                  overall_imbalance_pct: total > 0 ? ((totalBid / total) - 0.5) * 200 : 0,
+                  symbols: newSymbols
+                };
+              });
+              setLastUpdate(Date.now());
             }
           } catch (e) {
             console.error("Failed to parse message:", e);
@@ -190,7 +248,7 @@ export function WhaleWebSocketProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <WhaleWebSocketContext.Provider value={{ alerts, isConnected, lastUpdate }}>
+    <WhaleWebSocketContext.Provider value={{ alerts, imbalances, isConnected, lastUpdate }}>
       {children}
     </WhaleWebSocketContext.Provider>
   );
