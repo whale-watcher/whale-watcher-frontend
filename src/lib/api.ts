@@ -66,3 +66,40 @@ export async function fetchMarkets(): Promise<any[]> {
   if (!response.ok) throw new Error("Failed to fetch markets");
   return response.json();
 }
+
+export interface TradeSignal {
+  symbol: string;
+  direction: "LONG" | "SHORT" | "HOLD";
+  confidence: number;
+  imbalance_pct: number;
+  imbalance_signal: string;
+  whale_buy_pct: number;
+  whale_count: number;
+  reasons: string[];
+  timestamp: number;
+}
+
+export async function fetchSignals(symbol?: string): Promise<Record<string, TradeSignal> | TradeSignal> {
+  const params = symbol ? `?symbol=${symbol}` : "";
+  const response = await fetch(`${API_URL}/api/v1/trading/signals${params}`);
+  if (!response.ok) throw new Error("Failed to fetch signals");
+  return response.json();
+}
+
+export async function fetchAccount(walletAddress: string): Promise<any> {
+  const response = await fetch(`${API_URL}/api/v1/trading/account?account=${walletAddress}`);
+  if (!response.ok) throw new Error("Failed to fetch account");
+  return response.json();
+}
+
+export async function fetchPositions(walletAddress: string): Promise<any> {
+  const response = await fetch(`${API_URL}/api/v1/trading/positions?account=${walletAddress}`);
+  if (!response.ok) throw new Error("Failed to fetch positions");
+  return response.json();
+}
+
+export async function fetchOrders(walletAddress: string): Promise<any> {
+  const response = await fetch(`${API_URL}/api/v1/trading/orders?account=${walletAddress}`);
+  if (!response.ok) throw new Error("Failed to fetch orders");
+  return response.json();
+}

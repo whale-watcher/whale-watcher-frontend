@@ -8,6 +8,8 @@ import {
   WhaleOrderBook,
   WhaleAnalytics,
   OrderbookImbalance,
+  SmartTrade,
+  Portfolio,
 } from "@/components/dashboard";
 import { fetchWhaleStats, WhaleStats } from "@/lib/api";
 import { formatUSD } from "@/lib/utils";
@@ -20,11 +22,13 @@ import {
   LayoutGrid,
   BarChart3,
   BookOpen,
+  Brain,
+  Wallet,
 } from "lucide-react";
 import { ConnectWallet } from "@/components/ConnectWallet";
 import { cn } from "@/lib/utils";
 
-type TabType = "overview" | "orderbook" | "analytics";
+type TabType = "overview" | "orderbook" | "analytics" | "trade" | "portfolio";
 type SymbolFilter = "ALL" | "BTC" | "ETH" | "SOL";
 
 const SYMBOLS: SymbolFilter[] = ["ALL", "BTC", "ETH", "SOL"];
@@ -57,6 +61,8 @@ export function Dashboard() {
     { id: "overview" as TabType, label: "Overview", icon: LayoutGrid },
     { id: "orderbook" as TabType, label: "Order Book", icon: BookOpen },
     { id: "analytics" as TabType, label: "Analytics", icon: BarChart3 },
+    { id: "trade" as TabType, label: "Smart Trade", icon: Brain },
+    { id: "portfolio" as TabType, label: "Portfolio", icon: Wallet },
   ];
 
   return (
@@ -65,9 +71,11 @@ export function Dashboard() {
       <header className="border-b border-zinc-800 bg-zinc-950 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-500/10 rounded-lg">
-              <Zap className="text-blue-500" size={24} />
-            </div>
+            <img
+              src="/logo.png"
+              alt="Whale Watcher"
+              className="w-10 h-10 rounded-lg"
+            />
             <div>
               <h1 className="text-xl font-bold">Whale Watcher</h1>
               <p className="text-xs text-zinc-500">Powered by Pacifica</p>
@@ -188,6 +196,23 @@ export function Dashboard() {
 
         {activeTab === "analytics" && (
           <WhaleAnalytics symbolFilter={selectedSymbol === "ALL" ? undefined : selectedSymbol} />
+        )}
+
+        {activeTab === "trade" && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <SmartTrade symbolFilter={selectedSymbol === "ALL" ? undefined : selectedSymbol} />
+            </div>
+            <div className="space-y-6">
+              <OrderbookImbalance symbolFilter={selectedSymbol === "ALL" ? undefined : selectedSymbol} />
+            </div>
+          </div>
+        )}
+
+        {activeTab === "portfolio" && (
+          <div className="max-w-2xl mx-auto">
+            <Portfolio />
+          </div>
         )}
 
         {/* Footer */}

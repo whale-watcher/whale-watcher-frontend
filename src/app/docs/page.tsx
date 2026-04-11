@@ -23,6 +23,7 @@ const sections = [
   { id: "overview", label: "Overview" },
   { id: "features", label: "Features" },
   { id: "dashboard", label: "Dashboard" },
+  { id: "smart-trade", label: "Smart Trade" },
   { id: "orderbook-imbalance", label: "Orderbook Imbalance" },
   { id: "whale-detection", label: "Whale Detection" },
   { id: "telegram", label: "Telegram Bot" },
@@ -47,9 +48,7 @@ export default function DocsPage() {
             </Link>
             <div className="w-px h-5 bg-zinc-700" />
             <div className="flex items-center gap-2">
-              <div className="p-1.5 bg-blue-500/10 rounded-lg">
-                <Zap className="text-blue-500" size={18} />
-              </div>
+              <img src="/logo.png" alt="Whale Watcher" className="w-8 h-8 rounded-lg" />
               <div>
                 <span className="font-bold">Whale Watcher</span>
                 <span className="text-zinc-500 text-sm ml-2">Docs</span>
@@ -104,12 +103,12 @@ export default function DocsPage() {
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-8">
               {[
-                { icon: Activity, label: "Real-time Whale Feed", color: "text-green-500" },
+              { icon: Activity, label: "Real-time Whale Feed", color: "text-green-500" },
                 { icon: Gauge, label: "Orderbook Imbalance", color: "text-purple-500" },
                 { icon: BookOpen, label: "Order Flow Board", color: "text-blue-500" },
                 { icon: BarChart3, label: "Volume Analytics", color: "text-orange-500" },
                 { icon: Bell, label: "Telegram Alerts", color: "text-cyan-500" },
-                { icon: Wifi, label: "WebSocket Streaming", color: "text-pink-500" },
+                { icon: Wifi, label: "Smart Trade Signals", color: "text-yellow-500" },
               ].map(({ icon: Icon, label, color }) => (
                 <div
                   key={label}
@@ -158,9 +157,7 @@ export default function DocsPage() {
           <section id="dashboard">
             <SectionTitle>Dashboard</SectionTitle>
             <p className="text-zinc-400 mb-6">
-              The dashboard has three tabs accessible from the top navigation
-              bar. A symbol filter (ALL / BTC / ETH / SOL) applies globally to
-              all tabs.
+              The dashboard has five tabs. A symbol filter (ALL / BTC / ETH / SOL) applies globally.
             </p>
             <div className="space-y-4">
               <TabCard
@@ -170,7 +167,6 @@ export default function DocsPage() {
                   "Live whale activity feed with real-time updates",
                   "Orderbook Imbalance indicator with per-symbol breakdown",
                   "Volume Distribution chart (24h buy vs sell)",
-                  "Net Flow indicator",
                 ]}
               />
               <TabCard
@@ -186,12 +182,62 @@ export default function DocsPage() {
                 name="Analytics"
                 icon={<BarChart3 size={16} className="text-orange-500" />}
                 items={[
-                  "Top 5 largest buy trades",
-                  "Top 5 largest sell trades",
-                  "Volume by symbol (BTC/ETH/SOL) with buy-sell ratio",
+                  "Top 5 largest buy trades and sells",
+                  "Volume by symbol with buy-sell ratio",
                   "Market sentiment gauge",
                 ]}
               />
+              <TabCard
+                name="Smart Trade"
+                icon={<Activity size={16} className="text-yellow-500" />}
+                items={[
+                  "Signal per symbol: LONG / SHORT / HOLD with confidence %",
+                  "Combines orderbook imbalance + whale flow + activity level",
+                  "One-click link to execute on Pacifica testnet",
+                ]}
+              />
+              <TabCard
+                name="Portfolio"
+                icon={<Wifi size={16} className="text-purple-500" />}
+                items={[
+                  "Account equity, balance, margin used, available",
+                  "Open positions with unrealized PnL",
+                  "Quick links to deposit",
+                ]}
+              />
+            </div>
+          </section>
+
+          {/* Smart Trade */}
+          <section id="smart-trade">
+            <SectionTitle>Smart Trade</SectionTitle>
+            <p className="text-zinc-400 mb-6">
+              The signal engine combines multiple data sources into a single
+              actionable recommendation per symbol.
+            </p>
+
+            <h3 className="font-semibold mb-3">Signal Factors</h3>
+            <div className="space-y-3 mb-8">
+              {[
+                { weight: "50%", name: "Orderbook Imbalance", desc: "Bid/ask volume ratio from top 10 levels" },
+                { weight: "30%", name: "Whale Flow Direction", desc: "% of recent whale volume that is buy vs sell" },
+                { weight: "20%", name: "Whale Activity Level", desc: "Number of recent whale trades (more = higher confidence)" },
+              ].map(({ weight, name, desc }) => (
+                <div key={name} className="flex items-start gap-4 bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3">
+                  <span className="text-yellow-400 font-mono font-bold text-sm shrink-0 w-12">{weight}</span>
+                  <div>
+                    <div className="font-semibold text-sm">{name}</div>
+                    <div className="text-xs text-zinc-500">{desc}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <h3 className="font-semibold mb-3">Direction Logic</h3>
+            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 text-sm text-zinc-300 space-y-1">
+              <div><span className="text-green-400 font-bold">LONG</span> — imbalance bullish + whale buy dominant + confidence {"≥"} 30%</div>
+              <div><span className="text-red-400 font-bold">SHORT</span> — imbalance bearish + whale sell dominant + confidence {"≥"} 30%</div>
+              <div><span className="text-zinc-400 font-bold">HOLD</span> — mixed signals or low confidence</div>
             </div>
           </section>
 
@@ -328,8 +374,12 @@ Base URL: <Code>https://43.157.201.151.sslip.io</Code>
                 { method: "GET", path: "/api/v1/whales/stats", desc: "Whale statistics for 24h (query: symbol, hours)" },
                 { method: "GET", path: "/api/v1/whales/symbols", desc: "All symbols with whale activity" },
                 { method: "GET", path: "/api/v1/markets", desc: "All available Pacifica markets" },
-                { method: "GET", path: "/api/v1/markets/imbalance", desc: "Aggregated orderbook imbalance (query: symbol)" },
+              { method: "GET", path: "/api/v1/markets/imbalance", desc: "Aggregated orderbook imbalance (query: symbol)" },
                 { method: "GET", path: "/api/v1/markets/{symbol}/imbalance", desc: "Imbalance for a single symbol" },
+                { method: "GET", path: "/api/v1/trading/signals", desc: "Smart trade signals for all symbols" },
+                { method: "GET", path: "/api/v1/trading/signals/{symbol}", desc: "Signal for a specific symbol" },
+                { method: "GET", path: "/api/v1/trading/account", desc: "Pacifica account info (query: account)" },
+                { method: "GET", path: "/api/v1/trading/positions", desc: "Open positions (query: account)" },
               ].map(({ method, path, desc }) => (
                 <div
                   key={path}

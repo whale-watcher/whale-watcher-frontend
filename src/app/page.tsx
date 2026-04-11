@@ -1,5 +1,5 @@
-import { Dashboard } from "./dashboard";
+import { LandingPage } from "./landing";
 
 export default function Home() {
-  return <Dashboard />;
+  return <LandingPage />;
 }
