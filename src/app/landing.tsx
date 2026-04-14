@@ -17,47 +17,54 @@ import {
 import BlurText from "@/components/BlurText";
 import ShinyText from "@/components/ShinyText";
 import CountUp from "@/components/CountUp";
+import { PriceTicker } from "@/components/PriceTicker";
 
 const features = [
   {
     icon: Activity,
     title: "Real-time Whale Feed",
-    description: "See every large trade the moment it happens on Pacifica. BTC, ETH, SOL — all tracked 24/7.",
+    description:
+      "See every large trade the moment it happens on Pacifica. BTC, ETH, SOL — all tracked 24/7.",
     color: "from-green-500/20 to-green-500/0",
     iconColor: "text-green-500",
   },
   {
     icon: Gauge,
     title: "Orderbook Imbalance",
-    description: "Live bid/ask pressure visualization. Know if the market is leaning bullish or bearish in one glance.",
+    description:
+      "Live bid/ask pressure visualization. Know if the market is leaning bullish or bearish in one glance.",
     color: "from-purple-500/20 to-purple-500/0",
     iconColor: "text-purple-500",
   },
   {
     icon: Brain,
     title: "Smart Trade Signals",
-    description: "Combined analytics produce a LONG/SHORT/HOLD signal with confidence score. Data-driven suggestions.",
+    description:
+      "Combined analytics produce a LONG/SHORT/HOLD signal with confidence score. Data-driven suggestions.",
     color: "from-yellow-500/20 to-yellow-500/0",
     iconColor: "text-yellow-500",
   },
   {
     icon: Bell,
     title: "Telegram Alerts",
-    description: "Set your own threshold — $10k, $50k, $100k or any custom value. Get pinged only when it matters.",
+    description:
+      "Set your own threshold — $10k, $50k, $100k or any custom value. Get pinged only when it matters.",
     color: "from-cyan-500/20 to-cyan-500/0",
     iconColor: "text-cyan-500",
   },
   {
     icon: BookOpen,
     title: "Order Flow Board",
-    description: "Buy vs sell whale flow split side by side. Total pressure bar shows who's dominating.",
+    description:
+      "Buy vs sell whale flow split side by side. Total pressure bar shows who's dominating.",
     color: "from-blue-500/20 to-blue-500/0",
     iconColor: "text-blue-500",
   },
   {
     icon: Wallet,
     title: "Portfolio Tracking",
-    description: "Connect your wallet to view Pacifica account equity, positions, and unrealized PnL in real time.",
+    description:
+      "Connect your wallet to view Pacifica account equity, positions, and unrealized PnL in real time.",
     color: "from-pink-500/20 to-pink-500/0",
     iconColor: "text-pink-500",
   },
@@ -70,11 +77,18 @@ export function LandingPage() {
       <nav className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-zinc-800/50">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="Whale Watcher" className="w-9 h-9 rounded-lg" />
+            <img
+              src="/logo.png"
+              alt="Whale Watcher"
+              className="w-9 h-9 rounded-lg"
+            />
             <span className="font-bold text-lg">Whale Watcher</span>
           </div>
           <div className="flex items-center gap-4">
-            <Link href="/docs" className="text-sm text-zinc-400 hover:text-white transition-colors hidden sm:block">
+            <Link
+              href="/docs"
+              className="text-sm text-zinc-400 hover:text-white transition-colors hidden sm:block"
+            >
               Docs
             </Link>
             <a
@@ -112,7 +126,11 @@ export function LandingPage() {
           >
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-400 text-sm font-medium mb-8">
               <Zap size={14} />
-              <ShinyText text="Pacifica Hackathon 2026 · Track 2: Analytics & Data" speed={3} className="text-sm" />
+              <ShinyText
+                text="Pacifica Hackathon 2026 · Track 2: Analytics & Data"
+                speed={3}
+                className="text-sm"
+              />
             </div>
           </motion.div>
 
@@ -122,7 +140,11 @@ export function LandingPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <div className="mb-6">
-              <img src="/logo.png" alt="Whale Watcher" className="w-24 h-24 mx-auto rounded-2xl mb-6" />
+              <img
+                src="/logo.png"
+                alt="Whale Watcher"
+                className="w-24 h-24 mx-auto rounded-2xl mb-6"
+              />
             </div>
             <h1 className="text-5xl sm:text-7xl font-bold tracking-tight mb-2">
               <BlurText
@@ -148,9 +170,9 @@ export function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            Real-time market intelligence for Pacifica perpetuals.
-            See whale moves, read orderbook pressure, and get smart trade signals
-            — before everyone else.
+            Real-time market intelligence for Pacifica perpetuals. See whale
+            moves, read orderbook pressure, and get smart trade signals — before
+            everyone else.
           </motion.p>
 
           <motion.div
@@ -164,7 +186,10 @@ export function LandingPage() {
               className="group inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl transition-all text-lg"
             >
               Launch Dashboard
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              <ArrowRight
+                size={18}
+                className="group-hover:translate-x-1 transition-transform"
+              />
             </Link>
             <Link
               href="/docs"
@@ -185,15 +210,130 @@ export function LandingPage() {
         </div>
       </section>
 
+      {/* Live Dashboard Preview */}
+      <section className="py-16 px-4">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            className="text-center mb-10"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-full text-green-400 text-xs font-medium mb-4">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500" />
+              </span>
+              Live Dashboard Preview
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-3">
+              See it in action
+            </h2>
+            <p className="text-zinc-400 max-w-xl mx-auto">
+              This is the real dashboard — live data, real signals, updated
+              every few seconds.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="relative"
+          >
+            {/* Browser chrome */}
+            <div className="rounded-2xl overflow-hidden border border-zinc-700/60 shadow-[0_0_80px_rgba(59,130,246,0.08)] bg-zinc-900">
+              {/* Title bar */}
+              <div className="flex items-center gap-3 px-4 py-3 bg-zinc-800/80 border-b border-zinc-700/50">
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-red-500/70" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
+                  <div className="w-3 h-3 rounded-full bg-green-500/70" />
+                </div>
+                <div className="flex-1 bg-zinc-700/50 rounded-md px-3 py-1 text-xs text-zinc-400 font-mono flex items-center gap-2">
+                  <span className="text-green-400">🔒</span>
+                  whalewatcher.app/dashboard
+                  <span className="ml-auto flex items-center gap-1 text-green-400 text-[10px]">
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500" />
+                    </span>
+                    LIVE
+                  </span>
+                </div>
+              </div>
+
+              {/* iframe wrapper */}
+              <div className="relative w-full" style={{ height: "600px" }}>
+                <iframe
+                  src="/dashboard"
+                  className="w-full h-full border-0"
+                  style={{
+                    transform: "scale(0.85)",
+                    transformOrigin: "top left",
+                    width: "117.6%",
+                    height: "117.6%",
+                    pointerEvents: "none",
+                  }}
+                  scrolling="no"
+                  title="Whale Watcher Dashboard Preview"
+                />
+
+                {/* Bottom gradient fade */}
+                <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-zinc-900 via-zinc-900/80 to-transparent pointer-events-none" />
+
+                {/* CTA overlay */}
+                <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center justify-end pb-8 gap-4 pointer-events-none">
+                  <p className="text-zinc-400 text-sm">
+                    Full interactive experience in the dashboard
+                  </p>
+                  <Link
+                    href="/dashboard"
+                    className="pointer-events-auto group inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-blue-500/20"
+                  >
+                    Open Full Dashboard
+                    <ArrowRight
+                      size={16}
+                      className="group-hover:translate-x-1 transition-transform"
+                    />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Price Ticker */}
+      <PriceTicker />
+
       {/* Stats */}
+
       <section className="py-20 border-t border-zinc-800/50">
         <div className="max-w-5xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { value: 18, suffix: "M+", label: "Whale Volume Tracked (24h)", prefix: "$" },
-              { value: 800, suffix: "+", label: "Whale Alerts Detected", prefix: "" },
+              {
+                value: 18,
+                suffix: "M+",
+                label: "Whale Volume Tracked (24h)",
+                prefix: "$",
+              },
+              {
+                value: 800,
+                suffix: "+",
+                label: "Whale Alerts Detected",
+                prefix: "",
+              },
               { value: 3, suffix: "", label: "Markets Live", prefix: "" },
-              { value: 250, suffix: "ms", label: "Orderbook Update Speed", prefix: "" },
+              {
+                value: 250,
+                suffix: "ms",
+                label: "Orderbook Update Speed",
+                prefix: "",
+              },
             ].map(({ value, suffix, label, prefix }) => (
               <motion.div
                 key={label}
@@ -204,7 +344,14 @@ export function LandingPage() {
                 transition={{ duration: 0.5 }}
               >
                 <div className="text-3xl sm:text-4xl font-bold text-white mb-2">
-                  {prefix}<CountUp to={value} separator="," duration={2} className="font-bold" />{suffix}
+                  {prefix}
+                  <CountUp
+                    to={value}
+                    separator=","
+                    duration={2}
+                    className="font-bold"
+                  />
+                  {suffix}
                 </div>
                 <div className="text-sm text-zinc-500">{label}</div>
               </motion.div>
@@ -226,7 +373,8 @@ export function LandingPage() {
               Everything you need to trade smarter
             </h2>
             <p className="text-zinc-400 text-lg max-w-xl mx-auto">
-              From whale detection to smart signals — all powered by live Pacifica data.
+              From whale detection to smart signals — all powered by live
+              Pacifica data.
             </p>
           </motion.div>
 
@@ -240,13 +388,21 @@ export function LandingPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
               >
-                <div className={`absolute inset-0 bg-gradient-to-b ${feature.color} rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity`} />
+                <div
+                  className={`absolute inset-0 bg-gradient-to-b ${feature.color} rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity`}
+                />
                 <div className="relative">
-                  <div className={`w-10 h-10 rounded-xl bg-zinc-800 flex items-center justify-center mb-4 ${feature.iconColor}`}>
+                  <div
+                    className={`w-10 h-10 rounded-xl bg-zinc-800 flex items-center justify-center mb-4 ${feature.iconColor}`}
+                  >
                     <feature.icon size={20} />
                   </div>
-                  <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
-                  <p className="text-sm text-zinc-400 leading-relaxed">{feature.description}</p>
+                  <h3 className="font-semibold text-lg mb-2">
+                    {feature.title}
+                  </h3>
+                  <p className="text-sm text-zinc-400 leading-relaxed">
+                    {feature.description}
+                  </p>
                 </div>
               </motion.div>
             ))}
@@ -270,9 +426,21 @@ export function LandingPage() {
 
           <div className="space-y-0">
             {[
-              { step: "01", title: "We stream live data", desc: "Trades and orderbook from Pacifica WebSocket, processed in real time." },
-              { step: "02", title: "We analyze the signals", desc: "Whale detection + orderbook imbalance → combined into a confidence-scored signal." },
-              { step: "03", title: "You act on it", desc: "See the signal on your dashboard or get a Telegram ping. One click to execute on Pacifica." },
+              {
+                step: "01",
+                title: "We stream live data",
+                desc: "Trades and orderbook from Pacifica WebSocket, processed in real time.",
+              },
+              {
+                step: "02",
+                title: "We analyze the signals",
+                desc: "Whale detection + orderbook imbalance → combined into a confidence-scored signal.",
+              },
+              {
+                step: "03",
+                title: "You act on it",
+                desc: "See the signal on your dashboard or get a Telegram ping. One click to execute on Pacifica.",
+              },
             ].map((item, i) => (
               <motion.div
                 key={item.step}
@@ -282,7 +450,9 @@ export function LandingPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.15 }}
               >
-                <span className="text-4xl font-bold text-zinc-800 shrink-0">{item.step}</span>
+                <span className="text-4xl font-bold text-zinc-800 shrink-0">
+                  {item.step}
+                </span>
                 <div>
                   <h3 className="font-semibold text-xl mb-1">{item.title}</h3>
                   <p className="text-zinc-400">{item.desc}</p>
@@ -290,43 +460,6 @@ export function LandingPage() {
               </motion.div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-20">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="bg-gradient-to-b from-zinc-900 to-zinc-950 border border-zinc-800 rounded-3xl p-12"
-          >
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              Ready to trade with the whales?
-            </h2>
-            <p className="text-zinc-400 mb-8 text-lg">
-              Open the dashboard and start tracking whale activity right now. It&apos;s live and free.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/dashboard"
-                className="group inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl transition-all text-lg"
-              >
-                Open Dashboard
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <a
-                href="https://t.me/watcherWallerWhales_bot"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-zinc-800 hover:bg-zinc-700 text-white font-semibold rounded-xl transition-all text-lg"
-              >
-                Try Telegram Bot
-                <ExternalLink size={16} />
-              </a>
-            </div>
-          </motion.div>
         </div>
       </section>
 
@@ -338,9 +471,21 @@ export function LandingPage() {
             <span>Whale Watcher · Pacifica Hackathon 2026</span>
           </div>
           <div className="flex items-center gap-6">
-            <Link href="/dashboard" className="hover:text-white transition-colors">Dashboard</Link>
-            <Link href="/docs" className="hover:text-white transition-colors">Docs</Link>
-            <a href="https://pacifica.fi" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+            <Link
+              href="/dashboard"
+              className="hover:text-white transition-colors"
+            >
+              Dashboard
+            </Link>
+            <Link href="/docs" className="hover:text-white transition-colors">
+              Docs
+            </Link>
+            <a
+              href="https://pacifica.fi"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
+            >
               Pacifica ↗
             </a>
           </div>

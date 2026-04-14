@@ -83,8 +83,8 @@ function TelegramModal({
   const botUsername = "watcherWallerWhales_bot";
 
   return (
-    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 max-w-md w-full mx-4">
+    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[60] pt-48 px-4">
+      <div className="relative bg-zinc-900 border border-zinc-800 rounded-xl p-6 max-w-md w-full">
         <h3 className="text-lg font-semibold mb-4">🔔 Telegram Alerts</h3>
 
         <div className="space-y-4">

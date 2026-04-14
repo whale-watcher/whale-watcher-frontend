@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import {
   StatsCard,
   WhaleActivityFeed,
@@ -26,6 +27,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { ConnectWallet } from "@/components/ConnectWallet";
+import { PriceTicker } from "@/components/PriceTicker";
 import { cn } from "@/lib/utils";
 
 type TabType = "overview" | "orderbook" | "analytics" | "trade" | "portfolio";
@@ -66,28 +68,25 @@ export function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white pt-16">
       {/* Header */}
-      <header className="border-b border-zinc-800 bg-zinc-950 sticky top-0 z-40">
+      <header className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-zinc-800/50">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <img
               src="/logo.png"
               alt="Whale Watcher"
-              className="w-10 h-10 rounded-lg"
+              className="w-9 h-9 rounded-lg"
             />
-            <div>
-              <h1 className="text-xl font-bold">Whale Watcher</h1>
-              <p className="text-xs text-zinc-500">Powered by Pacifica</p>
-            </div>
-          </div>
+            <span className="font-bold text-lg">Whale Watcher</span>
+          </Link>
           <div className="flex items-center gap-4">
-            <a
+            <Link
               href="/docs"
-              className="text-sm text-zinc-400 hover:text-white transition-colors hidden sm:flex items-center gap-1"
+              className="text-sm text-zinc-400 hover:text-white transition-colors hidden sm:block"
             >
               Docs
-            </a>
+            </Link>
             <a
               href="https://pacifica.fi"
               target="_blank"
@@ -100,6 +99,9 @@ export function Dashboard() {
           </div>
         </div>
       </header>
+
+      {/* Price Ticker */}
+      <PriceTicker />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-6">
