@@ -3,13 +3,16 @@
 import { usePrivy } from "@privy-io/react-auth";
 import { useState } from "react";
 import { Wallet, LogOut, Bell, ExternalLink } from "lucide-react";
-import { cn } from "@/lib/utils";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export function ConnectWallet() {
   const { ready, authenticated, user, login, logout } = usePrivy();
   const [showTelegramModal, setShowTelegramModal] = useState(false);
+
+  // Find Solana wallet from linked accounts (works for both embedded & external Phantom)
+  const solanaAccount = user?.linkedAccounts?.find(
+    (a) => a.type === "wallet" && (a as { chainType?: string }).chainType === "solana"
+  );
+  const address = (solanaAccount as { address?: string })?.address ?? "";
 
   if (!ready) {
     return (
@@ -31,9 +34,8 @@ export function ConnectWallet() {
     );
   }
 
-  const walletAddress = user?.wallet?.address;
-  const shortAddress = walletAddress
-    ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`
+  const shortAddress = address
+    ? `${address.slice(0, 4)}...${address.slice(-4)}`
     : "Connected";
 
   return (
@@ -65,7 +67,7 @@ export function ConnectWallet() {
       {/* Telegram Modal */}
       {showTelegramModal && (
         <TelegramModal
-          walletAddress={walletAddress || ""}
+          walletAddress={address}
           onClose={() => setShowTelegramModal(false)}
         />
       )}
@@ -83,8 +85,8 @@ function TelegramModal({
   const botUsername = "watcherWallerWhales_bot";
 
   return (
-    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[60] pt-48 px-4">
-      <div className="relative bg-zinc-900 border border-zinc-800 rounded-xl p-6 max-w-md w-full">
+    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[60] pt-16 px-4">
+      <div className="relative bg-zinc-900 border border-zinc-800 mt-60 rounded-xl p-6 max-w-md w-full">
         <h3 className="text-lg font-semibold mb-4">🔔 Telegram Alerts</h3>
 
         <div className="space-y-4">
@@ -117,7 +119,11 @@ function TelegramModal({
               </span>
               <div>
                 <p className="text-sm">
-                  Send <code className="bg-zinc-800 px-1.5 py-0.5 rounded">/start</code> to subscribe
+                  Send{" "}
+                  <code className="bg-zinc-800 px-1.5 py-0.5 rounded">
+                    /start
+                  </code>{" "}
+                  to subscribe
                 </p>
               </div>
             </div>
@@ -127,15 +133,22 @@ function TelegramModal({
                 3
               </span>
               <div>
-                <p className="text-sm">You&apos;ll receive alerts when whales trade!</p>
+                <p className="text-sm">
+                  You&apos;ll receive alerts when whales trade!
+                </p>
               </div>
             </div>
           </div>
 
           <div className="pt-4 border-t border-zinc-800">
-            <p className="text-xs text-zinc-500 mb-3">
-              Your wallet: <code className="text-zinc-400">{walletAddress.slice(0, 10)}...</code>
-            </p>
+            {walletAddress && (
+              <p className="text-xs text-zinc-500 mb-3">
+                Your wallet:{" "}
+                <code className="text-zinc-400">
+                  {walletAddress.slice(0, 10)}...
+                </code>
+              </p>
+            )}
             <a
               href={`https://t.me/${botUsername}`}
               target="_blank"

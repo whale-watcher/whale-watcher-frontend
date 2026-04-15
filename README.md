@@ -21,7 +21,10 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 NEXT_PUBLIC_WS_URL=ws://localhost:8000
 NEXT_PUBLIC_PRIVY_APP_ID=your_privy_app_id
 NEXT_PUBLIC_PRIVY_CLIENT_ID=your_privy_client_id
+NEXT_PUBLIC_SOLANA_CLUSTER=devnet
 ```
+
+`NEXT_PUBLIC_SOLANA_CLUSTER` supports `devnet`, `mainnet`, and `testnet`. The frontend now defaults to `devnet` when this variable is omitted.
 
 ## Main UI modules
 - `src/app/dashboard.tsx` - Main dashboard layout and tabs
